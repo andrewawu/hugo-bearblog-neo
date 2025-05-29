@@ -17,7 +17,8 @@
 <content> {{ .Content }} </content>
 
 <p>
-  {{ range (.GetTerms "tags") }}
+  {{ $tagname := print .Type "tags" }}
+  {{ range (.GetTerms $tagname) }}
   <a href="{{ .Permalink }}">#{{ .LinkTitle }}</a>
   {{ end }}
 </p>

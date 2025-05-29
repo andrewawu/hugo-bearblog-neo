@@ -1,0 +1,13 @@
+{{ define "main" }}
+--- --- --- 
+  {{ .Content }}
+--- --- 
+  <h1>Latest post</h1>
+  {{ $blog := where site.RegularPages "Type" "blog" }}
+  {{ $create := where site.RegularPages "Type" "create" }}
+  {{ with (index (union $blog $create).ByDate.Reverse 0) }}
+    <h2>{{ .Title }}</h2>
+    {{ .Content }}
+  {{ end }}
+---
+{{ end }}

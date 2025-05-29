@@ -3,7 +3,7 @@
   {{ if .Data.Singular }}
   <h3 style="margin-bottom:0">Filtering for "{{ .Title }}"</h3>
   <small>
-    <a href="{{ "blog" | relURL }}">Remove filter</a>
+    <a href="{{ "../" }}">Remove filter</a>
   </small>
   {{ end }}
   {{ if .Site.Params.postSearch }}
@@ -40,7 +40,7 @@
         {{ end }}
 
         {{ if .Site.Params.showPostCount }}
-        const countText = `There ${visiblePosts <= 1 ? `is ${visiblePosts} piece.` : `are ${visiblePosts} pieces.`}`;
+        const countText = `There ${visiblePosts == 1 ? `is ${visiblePosts} post.` : `are ${visiblePosts} posts.`}`;
         document.getElementById('post-count').innerHTML = countText;
         {{ end }}
       }
@@ -53,8 +53,8 @@
   {{ end }}
   {{ if .Site.Params.showPostCount }}
   {{ $visiblePages := where .Pages "Params.hidden" "!=" true }}
-  <p id="post-count">There {{ if le (len $visiblePages) 1 }} is {{ len $visiblePages }} piece. {{ else }} are {{ len
-    $visiblePages }} pieces. {{ end }}</p>
+  <p id="post-count">There {{ if eq (len $visiblePages) 1 }} is {{ len $visiblePages }} post. {{ else }} are {{ len
+    $visiblePages }} posts. {{ end }}</p>
   {{ end }}
   <ul class="blog-posts">
     {{ $currentYear := 0 }}
@@ -92,8 +92,15 @@
   {{else}}
   <small>
     <div>
-      {{ range .Site.Taxonomies.tags }}
-      <a href="{{ .Page.Permalink }}">#{{ .Page.Title }}</a>&nbsp;
+      {{ if eq .Type "blog" }}
+        {{ range .Site.Taxonomies.blogtags }}
+        <a href="{{ .Page.Permalink }}">#{{ .Page.Title }}</a>&nbsp;
+        {{ end }}
+      {{ end }}
+      {{ if eq .Type "create" }}
+        {{ range .Site.Taxonomies.createtags }}
+        <a href="{{ .Page.Permalink }}">#{{ .Page.Title }}</a>&nbsp;
+        {{ end }}
       {{ end }}
     </div>
   </small>
